@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="favicon.ico">
+  <title>Serial Config | Telemetric Node</title>
+  <style>
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    .input-all {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-button {
+      padding: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      position: relative;
+      border: none;
+      background: none;
+    }
+
+    .tab-button::after {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 3px;
+      background: transparent;
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      transition: background 0.3s;
+    }
+
+    .tab-button.active::after {
+      background: blue;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+  </style>
+</head>
+
+<body style="max-width: 400px; margin:auto;">
+  <header id="header" class="header">
+    <div style="display: flex; justify-content: space-between;padding: 20px 20px;align-items: center;">
+
+      <svg width="121" height="23" viewBox="0 0 121 23" fill="none" xmlns="http:////www.w3.org/2000/svg">
+        <path
+          d="M8.88542 0.000373535C9.16365 0.00704704 9.43242 0.102695 9.65232 0.273289C9.87222 0.443884 10.0317 0.680448 10.1073 0.94829L13.7263 13.7802C13.9965 14.7384 15.3485 14.7561 15.6438 13.8052L18.0281 6.12537C18.1065 5.87353 18.2595 5.65142 18.4669 5.48845C18.6742 5.32548 18.9262 5.22933 19.1895 5.21273C19.4527 5.19613 19.7148 5.25986 19.941 5.39549C20.1672 5.53112 20.3469 5.73224 20.4563 5.97225L22.4471 10.3517C22.6094 10.7087 22.9653 10.9379 23.3574 10.9379H25.7813C26.1266 10.9379 26.4578 11.0751 26.702 11.3192C26.9462 11.5634 27.0833 11.8946 27.0833 12.24C27.0833 12.5853 26.9462 12.9165 26.702 13.1607C26.4578 13.4049 26.1266 13.542 25.7813 13.542H21.875C21.625 13.542 21.3802 13.47 21.17 13.3346C20.9598 13.1992 20.793 13.0062 20.6896 12.7785L20.5879 12.5549C20.2076 11.7182 18.9949 11.7946 18.7225 12.6723L15.8271 22.0014C15.7438 22.2696 15.576 22.5037 15.3488 22.6688C15.1215 22.8338 14.847 22.921 14.5662 22.9172C14.2854 22.9135 14.0133 22.819 13.7905 22.648C13.5678 22.4769 13.4063 22.2384 13.3302 21.9681L9.63291 8.86146C9.3655 7.91351 8.0332 7.88236 7.72177 8.81677L6.44375 12.6514C6.35737 12.9108 6.19157 13.1363 5.96983 13.2962C5.7481 13.456 5.48168 13.5421 5.20833 13.542H1.30208C0.956749 13.542 0.625559 13.4049 0.381371 13.1607C0.137183 12.9165 0 12.5853 0 12.24C0 11.8946 0.137183 11.5634 0.381371 11.3192C0.625559 11.0751 0.956749 10.9379 1.30208 10.9379H3.54903C3.97946 10.9379 4.3616 10.6624 4.49772 10.2541L7.61875 0.890999C7.70675 0.626521 7.8773 0.397262 8.10531 0.236941C8.33332 0.0766204 8.60676 -0.00630084 8.88542 0.000373535Z"
+          fill="white" />
+        <path d="M32.3418 4.75H29.4668V2.25H37.9668V4.75H35.0918V19.75H32.3418V4.75Z" fill="white" />
+        <path d="M39.2982 2.25H46.7982V4.75H42.0482V9.375H45.8232V11.875H42.0482V17.25H46.7982V19.75H39.2982V2.25Z"
+          fill="white" />
+        <path d="M48.3803 2.25H51.1303V17.25H55.6553V19.75H48.3803V2.25Z" fill="white" />
+        <path d="M56.974 2.25H64.474V4.75H59.724V9.375H63.499V11.875H59.724V17.25H64.474V19.75H56.974V2.25Z"
+          fill="white" />
+        <path
+          d="M66.0561 2.25H69.9811L71.7311 14.775H71.7811L73.5311 2.25H77.4561V19.75H74.8561V6.5H74.8061L72.8061 19.75H70.5061L68.5061 6.5H68.4561V19.75H66.0561V2.25Z"
+          fill="white" />
+        <path d="M79.5082 2.25H87.0082V4.75H82.2582V9.375H86.0332V11.875H82.2582V17.25H87.0082V19.75H79.5082V2.25Z"
+          fill="white" />
+        <path d="M90.7402 4.75H87.8652V2.25H96.3652V4.75H93.4902V19.75H90.7402V4.75Z" fill="white" />
+        <path
+          d="M97.6967 2.25H101.772C103.188 2.25 104.222 2.58333 104.872 3.25C105.522 3.9 105.847 4.90833 105.847 6.275V7.35C105.847 9.16667 105.247 10.3167 104.047 10.8V10.85C104.713 11.05 105.18 11.4583 105.447 12.075C105.73 12.6917 105.872 13.5167 105.872 14.55V17.625C105.872 18.125 105.888 18.5333 105.922 18.85C105.955 19.15 106.038 19.45 106.172 19.75H103.372C103.272 19.4667 103.205 19.2 103.172 18.95C103.138 18.7 103.122 18.25 103.122 17.6V14.4C103.122 13.6 102.988 13.0417 102.722 12.725C102.472 12.4083 102.03 12.25 101.397 12.25H100.447V19.75H97.6967V2.25ZM101.447 9.75C101.997 9.75 102.405 9.60833 102.672 9.325C102.955 9.04167 103.097 8.56667 103.097 7.9V6.55C103.097 5.91667 102.98 5.45833 102.747 5.175C102.53 4.89167 102.18 4.75 101.697 4.75H100.447V9.75H101.447Z"
+          fill="white" />
+        <path d="M107.78 2.25H110.53V19.75H107.78V2.25Z" fill="white" />
+        <path
+          d="M116.464 20C115.148 20 114.139 19.625 113.439 18.875C112.756 18.125 112.414 17.0667 112.414 15.7V6.3C112.414 4.93333 112.756 3.875 113.439 3.125C114.139 2.375 115.148 2 116.464 2C117.781 2 118.781 2.375 119.464 3.125C120.164 3.875 120.514 4.93333 120.514 6.3V8.15H117.914V6.125C117.914 5.04167 117.456 4.5 116.539 4.5C115.623 4.5 115.164 5.04167 115.164 6.125V15.9C115.164 16.9667 115.623 17.5 116.539 17.5C117.456 17.5 117.914 16.9667 117.914 15.9V13.225H120.514V15.7C120.514 17.0667 120.164 18.125 119.464 18.875C118.781 19.625 117.781 20 116.464 20Z"
+          fill="white" />
+      </svg>
+
+      <p style="color: white; font-weight: 400;">Node</p>
+    </div>
+  </header>
+  <main>
+    <div class="main-wrapper">
+      <div style="font-size: 18px;">
+        <a href="/" st>Home</a>
+      </div>
+      <div style="border-bottom: solid 1px;padding-bottom: 8px;">
+        <p id="pageTitle" style="font-size: 20px;font-weight: 400;">Serial Configuration</p>
+      </div>
+      <form id="serialConfigForm"
+        style="display: flex;flex-direction: column;gap: 16px;display: flex;margin-bottom: 150px">
+
+        <div class="tabs">
+          <button class="tab-button active" type="button" onclick="openTab(event, 'tab1')">Slave 1</button>
+          <button class="tab-button" type="button" onclick="openTab(event, 'tab2')">Slave 2</button>
+        </div>
+
+        <div>
+
+          <div id="tab1" class="tab-content active">
+            <div class="field-wrapper">
+              <h1>Slave ID:</h1>
+              <input type="number" name="slaveId1" style="font-size: 16px;" id="slaveId1" disabled />
+            </div>
+            <div class="field-wrapper">
+              <h1>Baud Rate:</h1>
+              <select name="baudRate1" id="baudRate1" style="font-size: 16px;">
+                <option value="0">2400</option>
+                <option value="1">4800</option>
+                <option value="2">9600</option>
+                <option value="3">14400</option>
+                <option value="4">19200</option>
+                <option value="5">115200</option>
+              </select>
+            </div>
+
+            <div class="field-wrapper">
+              <h1>Module Data Bits:</h1>
+              <select name="databits1" id="databits1" style="font-size: 16px;">
+                <option value="0">Databits 8</option>
+                <option value="1">Databits 7</option>
+              </select>
+            </div>
+
+            <div class="field-wrapper">
+              <h1>Module Parity:</h1>
+              <select name="parity1" id="parity1" style="font-size: 16px;">
+                <option value="0">None</option>
+                <option value="1">Odd</option>
+                <option value="2">Even</option>
+              </select>
+            </div>
+
+            <div class="field-wrapper">
+              <h1>Module Stop Bits:</h1>
+              <select name="stopbits1" id="stopbits1" style="font-size: 16px;">
+                <option value="0">Stopbits 1</option>
+                <option value="1">Stopbits 2</option>
+              </select>
+            </div>
+
+            <div class="field-wrapper" style="margin-top: 20px;">
+              <h1>Modbus Address Enable:</h1>
+              <div style="display: flex; gap: 16px;flex-wrap: wrap;" id="input-en-slave1">
+              </div>
+            </div>
+
+            <div id="input-all-slave1" class="input-all"></div>
+          </div>
+
+          <div id="tab2" class="tab-content">
+            <div class="field-wrapper">
+              <h1>Slave ID:</h1>
+              <input type="number" name="slaveId2" style="font-size: 16px;" id="slaveId2" disabled />
+            </div>
+            <div class="field-wrapper">
+              <h1>Baud Rate:</h1>
+              <select name="baudRate2" id="baudRate2" style="font-size: 16px;">
+                <option value="0">2400</option>
+                <option value="1">4800</option>
+                <option value="2">9600</option>
+                <option value="3">14400</option>
+                <option value="4">19200</option>
+                <option value="5">115200</option>
+              </select>
+            </div>
+
+            <div class="field-wrapper">
+              <h1>Module Data Bits:</h1>
+              <select name="databits2" id="databits2" style="font-size: 16px;">
+                <option value="0">Databits 8</option>
+                <option value="1">Databits 7</option>
+              </select>
+            </div>
+
+            <div class="field-wrapper">
+              <h1>Module Parity:</h1>
+              <select name="parity2" id="parity2" style="font-size: 16px;">
+                <option value="0">None</option>
+                <option value="1">Odd</option>
+                <option value="2">Even</option>
+              </select>
+            </div>
+
+            <div class="field-wrapper">
+              <h1>Module Stop Bits:</h1>
+              <select name="stopbits2" id="stopbits2" style="font-size: 16px;">
+                <option value="0">Stopbits 1</option>
+                <option value="1">Stopbits 2</option>
+              </select>
+            </div>
+ 
+            <div class="field-wrapper" style="margin-top: 20px;">
+              <h1>Modbus Address Enable:</h1>
+              <div style="display: flex; gap: 16px;flex-wrap: wrap;" id="input-en-slave2">
+              </div>
+            </div>
+
+            <div id="input-all-slave2" class="input-all"></div>
+          </div>
+        </div>
+
+
+
+        <button class="button" type="submit" value="Save" id="serialConfigButton"
+          style="width: 360px;position: fixed;bottom: 0;margin-bottom: 40px;">Save</button>
+      </form>
+  </main>
+</body>
+
+<script type="module">
+  import './style/style.css'
+  import { parseStringToObject } from './script/stringParser'
+  import { getApiData, postApiData } from './script/api'
+
+  const apiUrl = '/serial-config'
+  let activeTab = "tab1";
+
+  function getSerialConfig() {
+    getApiData(apiUrl)
+      .then((data) => {
+        let serialConfigData = parseStringToObject(data)
+        initializeForm(serialConfigData);
+        console.log('GET Data:', serialConfigData);
+      })
+      .catch((error) => {
+        console.error('GET Error:', error.message);
+      })
+  }
+
+  function updateInputsState() {
+    document.querySelectorAll("#tab1 input, #tab1 select").forEach(el => {
+      el.disabled = activeTab !== 'tab1';
+    });
+
+    document.querySelectorAll("#tab2 input, #tab2 select").forEach(el => {
+      el.disabled = activeTab !== 'tab2';
+    });
+  }
+
+  function initializeForm(serialConfigData) {
+    document.getElementById('baudRate1').value = serialConfigData.baudRate1;
+    document.getElementById('databits1').value = serialConfigData.databits1;
+    document.getElementById('parity1').value = serialConfigData.parity1;
+    document.getElementById('stopbits1').value = serialConfigData.stopbits1;
+    document.getElementById('slaveId1').value = serialConfigData.slaveId1;
+    document.getElementById('baudRate2').value = serialConfigData.baudRate2;
+    document.getElementById('databits2').value = serialConfigData.databits2;
+    document.getElementById('parity2').value = serialConfigData.parity2;
+    document.getElementById('stopbits2').value = serialConfigData.stopbits2;
+    document.getElementById('slaveId2').value = serialConfigData.slaveId2;
+
+    const enSlave1FieldsContainer = document.getElementById('input-en-slave1');
+    const allSlave1FieldsContainer = document.getElementById('input-all-slave1');
+    enSlave1FieldsContainer.innerHTML = "";
+    allSlave1FieldsContainer.innerHTML = "";
+
+    for (let i = 1; i <= 10; i++) {
+      const fieldsen = `
+        <div style="text-align: center;">
+            <p>${i}</p>
+            <input type="checkbox" name="en${i}" id="en${i}" ${serialConfigData["en" + i] == true ? 'checked' : null} style="width: 25px" disabled/>
+        </div> 
+      `;
+
+      const allFields = `
+        <div class="field-wrapper" style="margin-top: 20px">
+            <h1>Function ${i}:</h1>
+            <select name="fn${i}" id="fn${i}" disabled>
+                <option value="1" ${serialConfigData["fn" + i] == "1" ? 'selected' : null}>Read Coils R/W</option>
+                <option value="2" ${serialConfigData["fn" + i] == "2" ? 'selected' : null}>Read Discrete</option>
+                <option value="3" ${serialConfigData["fn" + i] == "3" ? 'selected' : null}>Read Holding</option>
+                <option value="4" ${serialConfigData["fn" + i] == "4" ? 'selected' : null}>Read Input</option>
+            </select>
+        </div>
+        <div class="field-wrapper">
+            <h1 for="type${i}">Data Type ${i}:</h1>
+            <select name="type${i}" id="type${i}" disabled>
+                <option value="0" ${serialConfigData["type" + i] == "0" ? 'selected' : null}>Data Type Unsigned</option>
+                <option value="1" ${serialConfigData["type" + i] == "1" ? 'selected' : null}>Data Type Signed</option>
+                <option value="2" ${serialConfigData["type" + i] == "2" ? 'selected' : null}>Data Type Long Inverse</option>
+                <option value="3" ${serialConfigData["type" + i] == "3" ? 'selected' : null}>Data Type Float - Big Endian</option>
+                <option value="4" ${serialConfigData["type" + i] == "4" ? 'selected' : null}>Data Type Float - Little Endian</option>
+                <option value="4" ${serialConfigData["type" + i] == "5" ? 'selected' : null}>Data Type Float - Mid Endian</option>
+            </select>
+        </div>
+        <div class="field-wrapper">
+            <h1>Address ${i}:</h1>
+            <input type="number" name="addr${i}" id="addr${i}" value="${serialConfigData["addr" + i]}" disabled/>
+        </div>
+        <div class="field-wrapper">
+            <h1>Length (Max 2) ${i}:</h1>
+            <input type="number" name="len${i}" id="len${i}" value="${serialConfigData["len" + i]}" max="2" disabled/>
+        </div>
+        <div class="field-wrapper" style="margin-bottom: 20px">
+            <h1>Tag (Max 10 char) ${i}:</h1>
+            <input type="text" name="tag${i}" id="tag${i}" value="${serialConfigData["tag" + i]}" maxlength="10" disabled/>
+        </div>
+        <hr style="color: #ddd; width: 100%"/>
+      `
+
+      allSlave1FieldsContainer.innerHTML += allFields;
+      enSlave1FieldsContainer.innerHTML += fieldsen;
+    }
+
+    const enSlave2FieldsContainer = document.getElementById('input-en-slave2');
+    const allSlave2FieldsContainer = document.getElementById('input-all-slave2');
+    enSlave2FieldsContainer.innerHTML = "";
+    allSlave2FieldsContainer.innerHTML = "";
+
+    for (let i = 11; i <= 20; i++) {
+      const fieldsen = `
+        <div style="text-align: center;">
+            <p>${i}</p>
+            <input type="checkbox" name="en${i}" id="en${i}" ${serialConfigData["en" + i] == true ? 'checked' : null} style="width: 25px" disabled/>
+        </div> 
+      `;
+
+      const allFields = `
+        <div class="field-wrapper" style="margin-top: 20px">
+            <h1>Function ${i}:</h1>
+            <select name="fn${i}" id="fn${i}" disabled>
+                <option value="1" ${serialConfigData["fn" + i] == "1" ? 'selected' : null}>Read Coils R/W</option>
+                <option value="2" ${serialConfigData["fn" + i] == "2" ? 'selected' : null}>Read Discrete</option>
+                <option value="3" ${serialConfigData["fn" + i] == "3" ? 'selected' : null}>Read Holding</option>
+                <option value="4" ${serialConfigData["fn" + i] == "4" ? 'selected' : null}>Read Input</option>
+            </select>
+        </div>
+        <div class="field-wrapper">
+            <h1 for="type${i}">Data Type ${i}:</h1>
+            <select name="type${i}" id="type${i}" disabled>
+                <option value="0" ${serialConfigData["type" + i] == "0" ? 'selected' : null}>Data Type Unsigned</option>
+                <option value="1" ${serialConfigData["type" + i] == "1" ? 'selected' : null}>Data Type Signed</option>
+                <option value="2" ${serialConfigData["type" + i] == "2" ? 'selected' : null}>Data Type Long Inverse</option>
+                <option value="3" ${serialConfigData["type" + i] == "3" ? 'selected' : null}>Data Type Float - Big Endian</option>
+                <option value="4" ${serialConfigData["type" + i] == "4" ? 'selected' : null}>Data Type Float - Little Endian</option>
+                <option value="4" ${serialConfigData["type" + i] == "5" ? 'selected' : null}>Data Type Float - Mid Endian</option>
+            </select>
+        </div>
+        <div class="field-wrapper">
+            <h1>Address ${i}:</h1>
+            <input type="number" name="addr${i}" id="addr${i}" value="${serialConfigData["addr" + i]}" disabled/>
+        </div>
+        <div class="field-wrapper">
+            <h1>Length (Max 2) ${i}:</h1>
+            <input type="number" name="len${i}" id="len${i}" value="${serialConfigData["len" + i]}" max="2" disabled/>
+        </div>
+        <div class="field-wrapper" style="margin-bottom: 20px">
+            <h1>Tag (Max 10 char) ${i}:</h1>
+            <input type="text" name="tag${i}" id="tag${i}" value="${serialConfigData["tag" + i]}" maxlength="10" disabled/>
+        </div>
+        <hr style="color: #ddd; width: 100%"/>
+      `
+
+      allSlave2FieldsContainer.innerHTML += allFields;
+      enSlave2FieldsContainer.innerHTML += fieldsen;
+    }
+
+    updateInputsState()
+  }
+
+  document.getElementById('serialConfigForm').addEventListener('submit', function (event) {
+
+    for (let i = 1; i <= 20; i++) {
+      const checkbox = document.getElementById(`en${i}`);
+      const tagInput = document.getElementById(`tag${i}`);
+
+      if (checkbox && tagInput && checkbox.checked && tagInput.value.trim() === "") {
+        alert(`Tag ${i} is required because en${i} is checked!`);
+        event.preventDefault(); // Mencegah submit jika tidak valid
+        return;
+      }
+    }
+
+    event.preventDefault()
+    submitForm()
+  })
+
+  function renderInput() {
+    const enSlave1FieldsContainer = document.getElementById('input-en-slave1');
+    const allSlave1FieldsContainer = document.getElementById('input-all-slave1');
+    enSlave1FieldsContainer.innerHTML = "";
+    allSlave1FieldsContainer.innerHTML = "";
+
+    for (let i = 1; i <= 10; i++) {
+      const fieldsen = `
+        <div style="text-align: center;">
+            <p>${i}</p>
+            <input type="checkbox" name="en${i}" id="en${i}" style="width: 25px" disabled/>
+        </div> 
+      `;
+
+      const allFields = `
+        <div class="field-wrapper" style="margin-top: 20px">
+            <h1>Function ${i}:</h1>
+            <select name="fn${i}" id="fn${i}" disabled>
+                <option value="1">Read Coils R/W</option>
+                <option value="2">Read Discrete</option>
+                <option value="3">Read Holding</option>
+                <option value="4">Read Input</option>
+            </select>
+        </div>
+        <div class="field-wrapper">
+            <h1 for="type${i}">Data Type ${i}:</h1>
+            <select name="type${i}" id="type${i}" disabled>
+                <option value="0">Data Type Unsigned</option>
+                <option value="1">Data Type Signed</option>
+                <option value="2">Data Type Long Inverse</option>
+                <option value="3">Data Type Float - Big Endian</option>
+                <option value="4">Data Type Float - Little Endian</option>
+            </select>
+        </div>
+        <div class="field-wrapper">
+            <h1>Address ${i}:</h1>
+            <input type="number" name="addr${i}" id="addr${i}" disabled/>
+        </div>
+        <div class="field-wrapper">
+            <h1>Length ${i} (Max 2):</h1>
+            <input type="number" name="len${i}" id="len${i}" max="2" disabled/>
+        </div>
+        <div class="field-wrapper" style="margin-bottom: 20px">
+            <h1>Tag ${i} (Max 10 char):</h1>
+            <input type="text" name="tag${i}" id="tag${i}" maxlength="10" disabled/>
+        </div>
+        <hr style="color: #ddd; width: 100%"/>
+      `
+
+      allSlave1FieldsContainer.innerHTML += allFields;
+      enSlave1FieldsContainer.innerHTML += fieldsen;
+    }
+
+    const enSlave2FieldsContainer = document.getElementById('input-en-slave2');
+    const allSlave2FieldsContainer = document.getElementById('input-all-slave2');
+    enSlave2FieldsContainer.innerHTML = "";
+    allSlave2FieldsContainer.innerHTML = "";
+
+    for (let i = 11; i <= 20; i++) {
+      const fieldsen = `
+        <div style="text-align: center;">
+            <p>${i}</p>
+              <input type="checkbox" name="en${i}" id="en${i}" style="width: 25px" disabled/>        
+            </div> 
+      `;
+
+      const allFields = `
+        <div class="field-wrapper" style="margin-top: 20px">
+            <h1>Function ${i}:</h1>
+            <select name="fn${i}" id="fn${i}" disabled>
+                <option value="1">Read Coils R/W</option>
+                <option value="2">Read Discrete</option>
+                <option value="3">Read Holding</option>
+                <option value="4">Read Input</option>
+            </select>
+        </div>
+        <div class="field-wrapper">
+            <h1 for="type${i}">Data Type ${i}:</h1>
+            <select name="type${i}" id="type${i}" disabled>
+                <option value="0">Unsigned</option>
+                <option value="1">Signed</option>
+                <option value="2">Long Inverse</option>
+                <option value="3">Float - Big Endian</option>
+                <option value="4">Float - Little Endian</option>
+            </select>
+        </div>
+        <div class="field-wrapper">
+            <h1>Address ${i}:</h1>
+            <input type="number" name="addr${i}" id="addr${i}" disabled/>
+        </div>
+        <div class="field-wrapper">
+            <h1>Length (Max 2) ${i}:</h1>
+            <input type="number" name="len${i}" id="len${i}" max="2" disabled/>
+        </div>
+        <div class="field-wrapper" style="margin-bottom: 20px">
+            <h1>Tag (Max 10 char) ${i}:</h1>
+            <input type="text" name="tag${i}" id="tag${i}" maxlength="10" disabled/>
+        </div>
+        <hr style="color: #ddd; width: 100%"/>
+      `
+
+      allSlave2FieldsContainer.innerHTML += allFields;
+      enSlave2FieldsContainer.innerHTML += fieldsen;
+    }
+  }
+
+
+  function submitForm() {
+    const form = document.getElementById('serialConfigForm')
+    const data = new URLSearchParams();
+    for (const pair of new FormData(form)) {
+      if (!pair[0].startsWith('en')) {
+        data.append(pair[0], pair[1])
+      }
+    }
+
+    const checkboxes = form.querySelectorAll('[type="checkbox"]:not([disabled])');
+    checkboxes.forEach((checkbox) => {
+      const name = checkbox.name;
+      const value = checkbox.checked ? "1" : "0";
+      data.append(name, value);
+    })
+
+    console.log('Form Data:', Object.fromEntries(data))
+
+    const submitButton = document.getElementById('serialConfigButton')
+    submitButton.disabled = true
+    submitButton.style.opacity = '0.5'
+    submitButton.innerHTML = 'Sending ...'
+
+    postApiData(apiUrl, data)
+      .then((response) => {
+        submitButton.disabled = false
+        submitButton.style.opacity = '1'
+        submitButton.innerHTML = 'Save'
+        console.log('POST Success:', response);
+        alert("Configuration Updated")
+        getSerialConfig()
+        // Handle success, update UI or perform any necessary actions
+      })
+      .catch((error) => {
+        submitButton.disabled = false
+        submitButton.style.opacity = '1'
+        submitButton.innerHTML = 'Save'
+        alert("Configuration Failed")
+        console.error('POST Error:', error.message);
+        // Handle error, display an error message or perform any necessary actions
+      })
+  }
+
+  function openTab(event, tabId) {
+    document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+    event.currentTarget.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+
+    activeTab = tabId;
+
+    if (tabId == 'tab1') {
+      document.querySelectorAll("#tab1 input, #tab1 select").forEach(el => {
+        el.disabled = false;
+      });
+      document.querySelectorAll("#tab2 input, #tab2 select").forEach(el => {
+        el.disabled = true;
+      });
+    } else {
+      document.querySelectorAll("#tab1 input, #tab1 select").forEach(el => {
+        el.disabled = true;
+      });
+      document.querySelectorAll("#tab2 input, #tab2 select").forEach(el => {
+        el.disabled = false;
+      });
+    }
+  }
+
+  window.openTab = openTab
+
+  window.onload = () => {
+    renderInput()
+    getSerialConfig()
+
+    document.querySelectorAll("#tab1 input, #tab1 select").forEach(el => {
+      el.disabled = false;
+    });
+  }
+
+</script>
+
+</html>

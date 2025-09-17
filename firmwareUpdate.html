@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="favicon.ico">
+  <title>Firmware Update | Telemetric GTLM</title>
+</head>
+
+<body style="max-width: 400px; margin:auto;">
+  <header id="header" class="header">
+    <div style="display: flex; justify-content: space-between;padding: 20px 20px;align-items: center;">
+      
+      <svg width="121" height="23" viewBox="0 0 121 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M8.88542 0.000373535C9.16365 0.00704704 9.43242 0.102695 9.65232 0.273289C9.87222 0.443884 10.0317 0.680448 10.1073 0.94829L13.7263 13.7802C13.9965 14.7384 15.3485 14.7561 15.6438 13.8052L18.0281 6.12537C18.1065 5.87353 18.2595 5.65142 18.4669 5.48845C18.6742 5.32548 18.9262 5.22933 19.1895 5.21273C19.4527 5.19613 19.7148 5.25986 19.941 5.39549C20.1672 5.53112 20.3469 5.73224 20.4563 5.97225L22.4471 10.3517C22.6094 10.7087 22.9653 10.9379 23.3574 10.9379H25.7813C26.1266 10.9379 26.4578 11.0751 26.702 11.3192C26.9462 11.5634 27.0833 11.8946 27.0833 12.24C27.0833 12.5853 26.9462 12.9165 26.702 13.1607C26.4578 13.4049 26.1266 13.542 25.7813 13.542H21.875C21.625 13.542 21.3802 13.47 21.17 13.3346C20.9598 13.1992 20.793 13.0062 20.6896 12.7785L20.5879 12.5549C20.2076 11.7182 18.9949 11.7946 18.7225 12.6723L15.8271 22.0014C15.7438 22.2696 15.576 22.5037 15.3488 22.6688C15.1215 22.8338 14.847 22.921 14.5662 22.9172C14.2854 22.9135 14.0133 22.819 13.7905 22.648C13.5678 22.4769 13.4063 22.2384 13.3302 21.9681L9.63291 8.86146C9.3655 7.91351 8.0332 7.88236 7.72177 8.81677L6.44375 12.6514C6.35737 12.9108 6.19157 13.1363 5.96983 13.2962C5.7481 13.456 5.48168 13.5421 5.20833 13.542H1.30208C0.956749 13.542 0.625559 13.4049 0.381371 13.1607C0.137183 12.9165 0 12.5853 0 12.24C0 11.8946 0.137183 11.5634 0.381371 11.3192C0.625559 11.0751 0.956749 10.9379 1.30208 10.9379H3.54903C3.97946 10.9379 4.3616 10.6624 4.49772 10.2541L7.61875 0.890999C7.70675 0.626521 7.8773 0.397262 8.10531 0.236941C8.33332 0.0766204 8.60676 -0.00630084 8.88542 0.000373535Z"
+          fill="white" />
+        <path d="M32.3418 4.75H29.4668V2.25H37.9668V4.75H35.0918V19.75H32.3418V4.75Z" fill="white" />
+        <path d="M39.2982 2.25H46.7982V4.75H42.0482V9.375H45.8232V11.875H42.0482V17.25H46.7982V19.75H39.2982V2.25Z"
+          fill="white" />
+        <path d="M48.3803 2.25H51.1303V17.25H55.6553V19.75H48.3803V2.25Z" fill="white" />
+        <path d="M56.974 2.25H64.474V4.75H59.724V9.375H63.499V11.875H59.724V17.25H64.474V19.75H56.974V2.25Z"
+          fill="white" />
+        <path
+          d="M66.0561 2.25H69.9811L71.7311 14.775H71.7811L73.5311 2.25H77.4561V19.75H74.8561V6.5H74.8061L72.8061 19.75H70.5061L68.5061 6.5H68.4561V19.75H66.0561V2.25Z"
+          fill="white" />
+        <path d="M79.5082 2.25H87.0082V4.75H82.2582V9.375H86.0332V11.875H82.2582V17.25H87.0082V19.75H79.5082V2.25Z"
+          fill="white" />
+        <path d="M90.7402 4.75H87.8652V2.25H96.3652V4.75H93.4902V19.75H90.7402V4.75Z" fill="white" />
+        <path
+          d="M97.6967 2.25H101.772C103.188 2.25 104.222 2.58333 104.872 3.25C105.522 3.9 105.847 4.90833 105.847 6.275V7.35C105.847 9.16667 105.247 10.3167 104.047 10.8V10.85C104.713 11.05 105.18 11.4583 105.447 12.075C105.73 12.6917 105.872 13.5167 105.872 14.55V17.625C105.872 18.125 105.888 18.5333 105.922 18.85C105.955 19.15 106.038 19.45 106.172 19.75H103.372C103.272 19.4667 103.205 19.2 103.172 18.95C103.138 18.7 103.122 18.25 103.122 17.6V14.4C103.122 13.6 102.988 13.0417 102.722 12.725C102.472 12.4083 102.03 12.25 101.397 12.25H100.447V19.75H97.6967V2.25ZM101.447 9.75C101.997 9.75 102.405 9.60833 102.672 9.325C102.955 9.04167 103.097 8.56667 103.097 7.9V6.55C103.097 5.91667 102.98 5.45833 102.747 5.175C102.53 4.89167 102.18 4.75 101.697 4.75H100.447V9.75H101.447Z"
+          fill="white" />
+        <path d="M107.78 2.25H110.53V19.75H107.78V2.25Z" fill="white" />
+        <path
+          d="M116.464 20C115.148 20 114.139 19.625 113.439 18.875C112.756 18.125 112.414 17.0667 112.414 15.7V6.3C112.414 4.93333 112.756 3.875 113.439 3.125C114.139 2.375 115.148 2 116.464 2C117.781 2 118.781 2.375 119.464 3.125C120.164 3.875 120.514 4.93333 120.514 6.3V8.15H117.914V6.125C117.914 5.04167 117.456 4.5 116.539 4.5C115.623 4.5 115.164 5.04167 115.164 6.125V15.9C115.164 16.9667 115.623 17.5 116.539 17.5C117.456 17.5 117.914 16.9667 117.914 15.9V13.225H120.514V15.7C120.514 17.0667 120.164 18.125 119.464 18.875C118.781 19.625 117.781 20 116.464 20Z"
+          fill="white" />
+      </svg>
+    </div>
+  </header>
+  <main>
+    <div class="main-wrapper" style="height: 100vh;">
+      <div style="font-size: 18px;">
+        <a href="/" st>Home</a>
+      </div>
+      <div style="display: flex;flex-direction: column;gap: 20px;">
+        <div style="border-bottom: solid 1px;padding-bottom: 8px;">
+          <p id="pageTitle" style="font-size: 20px;font-weight: 400;">Firmware Update</p>
+        </div>
+        <div class="field-wrapper">
+          <h1>Firmware file:</h1>
+          <input type="file" id="otafile" name="otafile" accept=".bin" />
+        </div>
+        <div class="field-wrapper">
+          <button class="button" id="uploadBtn" type="button">Upload</button>
+          <div id="progress"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>
+
+<script type="module">
+  import './style/style.css'
+
+  document.getElementById('uploadBtn').addEventListener('click', function (event) {
+    event.preventDefault()
+    startUpload()
+  })
+
+
+
+  function startUpload() {
+
+    var otafile = document.getElementById("otafile").files;
+
+    if (otafile.length == 0) {
+      alert("No file selected!");
+    } else {
+      document.getElementById("otafile").disabled = true;
+      document.getElementById("uploadBtn").disabled = true;
+
+      var file = otafile[0];
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+          if (xhr.status == 200) {
+            document.open();
+            document.write(xhr.responseText);
+            document.close();
+          } else if (xhr.status == 0) {
+            alert("Server closed the connection abruptly!");
+            location.reload()
+          } else {
+            alert(xhr.status + " Error!\n" + xhr.responseText);
+            location.reload()
+          }
+        }
+      };
+
+      xhr.upload.onprogress = function (e) {
+        var progress = document.getElementById("progress");
+        progress.textContent = "Progress: " + (e.loaded / e.total * 100).toFixed(0) + "%";
+      };
+      xhr.open("POST", "/firmware-update", true);
+      xhr.send(file);
+    }
+  }
+
+
+
+</script>
+
+<style>
+
+  input::file-selector-button {
+    justify-content: center;
+    align-items: center;
+    padding: 2px 8px;
+    height: 40px;
+    border: solid 2px #0989C0;
+    border-radius: 100px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 12px;
+    color: #0989C0;
+    background-color: transparent;
+    cursor: pointer;
+  }
+  
+</style>
