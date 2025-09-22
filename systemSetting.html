@@ -59,6 +59,28 @@
         <input type="text" name="factory" value="1" style="display: none;">
         <button id="factoryBtn" type="submit" class="button">Factory Reset</button>
       </form>
+      <form id="moduleConfigForm" style="display: flex;flex-direction: column;gap: 20px;">
+        <div class="field-wrapper" style="display: flex; flex-direction: row;align-items: center;">
+          <input type="checkbox" name="powerEn" id="powerEn" style="width: 16px" />
+          <label for="powerEn">Power Saving Enable</label>
+        </div>
+        <div class="field-wrapper">
+          <h1>Power Idle Time (min):</h1>
+          <input type="number" placeholder="5 to 60 min" min="5" max="60" name="powerIdle" id="powerIdle" />
+        </div>
+        <div class="field-wrapper">
+          <h1>Power Sleep Time (min):</h1>
+          <input type="number" placeholder="5 to 1440 min" min="5" max="1440" name="powerSleep" id="powerSleep" />
+        </div>
+        <div class="field-wrapper">
+          <h1>Transmission Interval (sec):</h1>
+          <input type="number" placeholder="5 to 360 sec" min="10" max="360" name="moduleInterval" id="moduleInterval" />
+        </div>
+        <button class="button" type="submit" value="Save" id="moduleConfigButton"
+          style="width: 360px;position: fixed;bottom: 0;margin-bottom: 40px;">Save</button>
+      </form>
+
+
     </div>
   </main>
 </body>
@@ -67,11 +89,101 @@
 
 <script type="module">
   import { LoadWebSocket } from './script/loadWebSocket'
+  import { parseStringToObject } from './script/stringParser'
   import './style/style.css'
-  import { postApiData } from './script/api'
+  import { getApiData, postApiData } from './script/api'
 
   /// HTTP handler
   const apiUrl = '/system-config'
+  const moduleApiUrl = '/module-config'
+
+  window.onload = () => {
+    getModuleConfig()
+  }
+
+  function getModuleConfig() {
+    getApiData(moduleApiUrl)
+      .then((data) => {
+        let moduleConfigData = parseStringToObject(data)
+        initializeForm(moduleConfigData);
+        console.log('GET Data:', moduleConfigData);
+      })
+      .catch((error) => {
+        console.error('GET Error:', error.message);
+      })
+  }
+
+
+  function initializeForm(moduleConfigData) {
+    console.log('init')
+    document.getElementById("powerEn").checked = moduleConfigData.powerEn === "1";
+    document.getElementById("moduleInterval").value = moduleConfigData.moduleInterval;
+    document.getElementById("powerIdle").value = moduleConfigData.powerIdle;
+    document.getElementById("powerSleep").value = moduleConfigData.powerSleep;
+  }
+
+
+  document.getElementById('moduleConfigForm').addEventListener('submit', function (event) {
+    const checkbox = document.getElementById("powerEn");
+    const tagInput1 = document.getElementById("powerIdle");
+    const tagInput2 = document.getElementById("powerSleep");
+    if (checkbox && tagInput1 && checkbox.checked && tagInput1.value.trim() === "") {
+      console.log('test')
+      alert(`Idle Time is required because enable is checked!`);
+      event.preventDefault();
+      return;
+    }
+    if (checkbox && tagInput2 && checkbox.checked && tagInput2.value.trim() === "") {
+      console.log('test')
+      alert(`Sleep Time and is required because enable is checked!`);
+      event.preventDefault();
+      return;
+    }
+    event.preventDefault()
+    submitModuleForm()
+  })
+
+  function submitModuleForm() {
+    const form = document.getElementById('moduleConfigForm')
+    const data = new URLSearchParams();
+    for (const pair of new FormData(form)) {
+      if (!pair[0].endsWith('En')) {
+        data.append(pair[0], pair[1])
+      }
+    }
+    const checkboxes = form.querySelectorAll('[type="checkbox"]:not([disabled])');
+    checkboxes.forEach((checkbox) => {
+      const name = checkbox.name;
+      const value = checkbox.checked ? "1" : "0";
+      data.append(name, value);
+    })
+
+    console.log('Form Data:', Object.fromEntries(data))
+
+    const submitButton = document.getElementById('moduleConfigButton')
+    submitButton.disabled = true
+    submitButton.style.opacity = '0.5'
+    submitButton.innerHTML = 'Sending ...'
+
+    postApiData(moduleApiUrl, data)
+      .then((response) => {
+        submitButton.disabled = false
+        submitButton.style.opacity = '1'
+        submitButton.innerHTML = 'Save'
+        console.log('POST Success:', response);
+        alert("Configuration Updated")
+        getModuleConfig()
+        // Handle success, update UI or perform any necessary actions
+      })
+      .catch((error) => {
+        submitButton.disabled = false
+        submitButton.style.opacity = '1'
+        submitButton.innerHTML = 'Save'
+        alert("Configuration Failed")
+        console.error('POST Error:', error.message);
+        // Handle error, display an error message or perform any necessary actions
+      })
+  }
 
   document.getElementById('rebootForm').addEventListener('submit', function (event) {
     event.preventDefault()
