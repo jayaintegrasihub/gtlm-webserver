@@ -78,6 +78,18 @@
                 <h1>Modem Password</h1>
                 <input type="text" name="modemPass" id="modemPass" maxlength="32" placeholder="Password">
               </div>
+              <div class="field-wrapper">
+                <h1>Modem Network Mode</h1>
+                <select name="modemNetwork" id="modemNetwork">
+                  <option value="2">Automatic</option>
+                  <option value="13">GSM Only</option>
+                  <option value="14">WCDMA Only</option>
+                  <option value="38">LTE Only</option>
+                  <option value="19">GSM + WCDMA Only</option>
+                  <option value="39">GSM + WCDMA + LTE Only</option>
+                  <option value="51">GSM + LTE Only</option>
+                </select>
+              </div>
             </div>
 
             <div id="ethContainer" style="display: flex;flex-direction: column;gap: 16px;">
@@ -223,6 +235,7 @@
         document.getElementById('modemApn').value = data.modemApn
         document.getElementById('modemUser').value = data.modemUser
         document.getElementById('modemPass').value = data.modemPass
+        document.getElementById('modemNetwork').value = data.modemNetwork
         break;
       case '1':
         const ethMode = document.querySelectorAll('[name="ethMode"]')
