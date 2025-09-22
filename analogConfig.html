@@ -127,9 +127,20 @@
           <input type="checkbox" name="analogEn" id="analogEn" style="width: 16px" />
           <label for="analogEn">Analog Enable</label>
         </div>
+
         <div class="field-wrapper">
-          <h1>Data Tag:</h1>
-          <input type="text" maxlength="10" name="analogTag" id="analogTag" />
+          <h1>Display Tag:</h1>
+          <input type="text" maxlength="10" name="analogDisptag" id="analogDisptag" />
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+          <div class="field-wrapper">
+            <h1>Data Tag:</h1>
+            <input type="text" maxlength="10" name="analogTag" id="analogTag" style="width: 160px;" />
+          </div>
+          <div class="field-wrapper">
+            <h1>Offset Value:</h1>
+            <input type="number" min="-1000.00" max="1000.00" step="0.01" name="analogOffset" id="analogOffset" />
+          </div>
         </div>
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
           <div class="field-wrapper">
@@ -208,15 +219,23 @@
     document.getElementById("analogEn").checked = analogConfigData.analogEn === "1";
     document.getElementById("analogLrange").value = analogConfigData.analogLrange;
     document.getElementById("analogHrange").value = analogConfigData.analogHrange;
+    document.getElementById("analogOffset").value = analogConfigData.analogOffset;
     document.getElementById("analogTag").value = analogConfigData.analogTag;
+    document.getElementById("analogDisptag").value = analogConfigData.analogDisptag;
   }
 
   document.getElementById('analogConfigForm').addEventListener('submit', function (event) {
     var analogInput = document.getElementById('analogInput').value
     const checkbox = document.getElementById("analogEn");
     const tagInput = document.getElementById("analogTag");
+    const tagInput2 = document.getElementById("analogDisptag");
     if (checkbox && tagInput && checkbox.checked && tagInput.value.trim() === "") {
-      alert(`Tag is required because enable is checked!`);
+      alert(`Data Tag is required because enable is checked!`);
+      event.preventDefault();
+      return;
+    }
+    if (checkbox && tagInput2 && checkbox.checked && tagInput2.value.trim() === "") {
+      alert(`Display Tag is required because enable is checked!`);
       event.preventDefault();
       return;
     }
