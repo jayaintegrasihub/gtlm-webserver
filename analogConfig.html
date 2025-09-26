@@ -121,21 +121,46 @@
           </div>
         </div>
       </div>
+      <div style="display: flex;flex-direction: row;">
+        <div class="field-wrapper">
+          <h1>Voltage:</h1>
+          <div style="background-color: #E6E6E6;padding: 6px 12px;border-radius: 4px;width: fit-content;">
+            <h1 id="voltValue"></h1>
+          </div>
+        </div>
+        <div class="field-wrapper">
+          <h1>Current:</h1>
+          <div style="background-color: #E6E6E6;padding: 6px 12px;border-radius: 4px;width: fit-content;">
+            <h1 id="currValue"></h1>
+          </div>
+        </div>
+        <div class="field-wrapper">
+          <h1>Calculated:</h1>
+          <div style="background-color: #E6E6E6;padding: 6px 12px;border-radius: 4px;width: fit-content;">
+            <h1 id="calcValue"></h1>
+          </div>
+        </div>
+      </div>
       <form id="analogConfigForm"
         style="display: flex;flex-direction: column;gap: 16px;display: flex;margin-bottom: 150px">
         <div class="field-wrapper" style="display: flex; flex-direction: row;align-items: center;">
           <input type="checkbox" name="analogEn" id="analogEn" style="width: 16px" />
           <label for="analogEn">Analog Enable</label>
         </div>
-
-        <div class="field-wrapper">
-          <h1>Display Tag:</h1>
-          <input type="text" maxlength="10" name="analogDisptag" id="analogDisptag" />
-        </div>
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+          <div class="field-wrapper">
+            <h1>Display Tag:</h1>
+            <input type="text" maxlength="10" name="analogDisptag" id="analogDisptag" style="width: 160px;" />
+          </div>
           <div class="field-wrapper">
             <h1>Data Tag:</h1>
             <input type="text" maxlength="10" name="analogTag" id="analogTag" style="width: 160px;" />
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+          <div class="field-wrapper">
+            <h1>Analog Reference:</h1>
+            <input type="number" min="2500" max="5500" name="analogRef" id="analogRef" />
           </div>
           <div class="field-wrapper">
             <h1>Offset Value:</h1>
@@ -190,16 +215,41 @@
   import { getApiData, postApiData } from './script/api'
 
   const apiUrl = '/analog-config/'
+  const infoURl = '/analog-info'
+
+  let getTimeInterval
 
   window.onload = () => {
     getAnalogConfig(1)
+    getAnalogInfo(1)
+    getTimeInterval = setInterval(() => getAnalogInfo(1), 3000)
+  }
+
+  window.onabort = () => {
+    clearInterval(getTimeInterval)
   }
 
   document.getElementById('analogInput').addEventListener('change', function (event) {
     event.preventDefault()
-    console.log(event.target.value)
     getAnalogConfig(event.target.value)
+    clearInterval(getTimeInterval)
+    getTimeInterval = setInterval(() => getAnalogInfo(event.target.value), 3000)
   })
+
+
+  function getAnalogInfo(index) {
+    getApiData(infoURl)
+      .then((data) => {
+        let analogInfoData = parseStringToObject(data)
+        console.log('GET Data:', analogInfoData);
+        document.getElementById("voltValue").innerHTML = analogInfoData[`voltValue${index}`] + ' V';
+        document.getElementById("currValue").innerHTML = analogInfoData[`currValue${index}`] + ' mA';
+        document.getElementById("calcValue").innerHTML = analogInfoData[`calcValue${index}`];
+      })
+      .catch((error) => {
+        console.error('GET Error:', error.message);
+      })
+  }
 
   function getAnalogConfig(index) {
     getApiData(apiUrl + `${index}`)
@@ -220,6 +270,7 @@
     document.getElementById("analogLrange").value = analogConfigData.analogLrange;
     document.getElementById("analogHrange").value = analogConfigData.analogHrange;
     document.getElementById("analogOffset").value = analogConfigData.analogOffset;
+    document.getElementById("analogRef").value = analogConfigData.analogRef;
     document.getElementById("analogTag").value = analogConfigData.analogTag;
     document.getElementById("analogDisptag").value = analogConfigData.analogDisptag;
   }
